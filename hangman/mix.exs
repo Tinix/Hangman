@@ -11,6 +11,7 @@ defmodule Hangman.MixProject do
     ]
   end
 
+  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger]
@@ -19,8 +20,7 @@ defmodule Hangman.MixProject do
 
   defp deps do
     [
-      {:dictionary, path: "../dictionary"},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      { :dictionary,  path: "../dictionary" },
     ]
   end
 end

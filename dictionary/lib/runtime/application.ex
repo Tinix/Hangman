@@ -1,5 +1,5 @@
 defmodule Dictionary.Runtime.Application do
-  
+
   use Application
 
   def start(_type, _args) do
@@ -8,8 +8,8 @@ defmodule Dictionary.Runtime.Application do
     ]
 
     options = [
-      name: Dictionary.Runtime.Server,
-      strategy: :one_for_one
+      name: Dictionary.Runtime.Supervisor,
+      strategy: :one_for_one,
     ]
 
     Supervisor.start_link(children, options)
