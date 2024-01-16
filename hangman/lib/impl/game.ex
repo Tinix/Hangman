@@ -86,6 +86,7 @@ defmodule Hangman.Impl.Game do
   defp return_with_tally(game) do
     { game, tally(game) }
   end
+
   defp reveal_guessed_letters(game) do
     game.letters
     |> Enum.map(fn letter -> MapSet.member?(game.used, letter) |> maybe_reveal(letter) end)
@@ -97,4 +98,3 @@ defmodule Hangman.Impl.Game do
   defp maybe_reveal(true, letter),  do: letter
   defp maybe_reveal(_,    _letter), do: "_"
 end
-
