@@ -1,21 +1,18 @@
 # Dictionary
 
-**TODO: Add description**
+Supplies random English words to the [Hangman game](../README.md). The word
+server starts automatically with the application.
 
-## Installation
+Requires Elixir 1.16+ and Erlang/OTP 26+.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `dictionary` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:dictionary, "~> 0.1.0"}
-  ]
-end
+```sh
+cd dictionary    # from the repository root
+mix test
+iex -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/dictionary](https://hexdocs.pm/dictionary).
+```elixir
+iex> Dictionary.random_word()
+```
 
+The words live in [`assets/words.txt`](assets/words.txt).

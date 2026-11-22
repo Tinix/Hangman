@@ -1,21 +1,22 @@
 # Hangman
 
-**TODO: Add description**
+The rules of the [Hangman game](../README.md). Each game runs in its own
+GenServer, linked to the process that created it.
 
-## Installation
+Requires Elixir 1.16+ and Erlang/OTP 26+.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `hangman` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:hangman, "~> 0.1.0"}
-  ]
-end
+```sh
+cd hangman    # from the repository root
+mix deps.get
+mix test
+iex -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/hangman](https://hexdocs.pm/hangman).
+```elixir
+iex> game = Hangman.new_game()
+iex> Hangman.make_move(game, "e")
+iex> Hangman.tally(game)
+```
 
+See [Using the game from Elixir](../README.md#using-the-game-from-elixir) for
+the returned values.

@@ -61,7 +61,20 @@ defmodule HangmanImplGameTest do
     assert tally.game_state == :bad_guess
   end
 
-  # hello
+  test "a repeated letter is revealed in every position" do
+    game = Game.new_game("banana")
+    {_game, tally} = Game.make_move(game, "a")
+    assert tally.letters == ["_", "a", "_", "a", "_", "a"]
+  end
+
+  test "a game can be won on the last turn" do
+    game = %{ Game.new_game("a") | turns_left: 1 }
+    {_game, tally} = Game.make_move(game, "a")
+    assert tally.game_state == :won
+    assert tally.turns_left == 1
+  end
+
+  # these scripts all use the word "hello"
   test "can handle a sequence of moves" do
     [
       # guess | state     turns  letters                     used
@@ -99,7 +112,7 @@ defmodule HangmanImplGameTest do
       ["f", :bad_guess,    2, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f"]],
       ["g", :bad_guess,    1, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g"]],
       ["h", :good_guess,   1, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h"]],
-      ["i", :lost,         0, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
+      ["i", :lost,         0, ["h", "e", "l", "l", "o"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
     ]
     |> test_sequence_of_moves()
   end

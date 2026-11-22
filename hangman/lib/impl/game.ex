@@ -4,7 +4,7 @@ defmodule Hangman.Impl.Game do
 
   @type t :: %__MODULE__{
     turns_left: integer,
-    game_state: Hangman.state,
+    game_state: Type.state,
     letters:    list(String.t),
     used:       MapSet.t(String.t),
   }
@@ -13,7 +13,7 @@ defmodule Hangman.Impl.Game do
     turns_left: 7,
     game_state: :initializing,
     letters:    [],
-    used:       MapSet.new(),
+    used:       MapSet.new()
   )
 
   ##################################################
@@ -74,6 +74,7 @@ defmodule Hangman.Impl.Game do
   ##################################################
 
 
+  @spec tally(t) :: Type.tally
   def tally(game) do
     %{
       turns_left: game.turns_left,
@@ -86,6 +87,8 @@ defmodule Hangman.Impl.Game do
   defp return_with_tally(game) do
     { game, tally(game) }
   end
+
+  defp reveal_guessed_letters(%{ game_state: :lost, letters: letters }), do: letters
 
   defp reveal_guessed_letters(game) do
     game.letters

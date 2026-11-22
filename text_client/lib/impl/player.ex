@@ -12,8 +12,8 @@ defmodule TextClient.Impl.Player do
   end
 
   @spec interact(state) :: :ok 
-  def interact({_game, _tally = %{game_state: :won}}) do
-    IO.puts("Congratulations. You won!")
+  def interact({_game, tally = %{game_state: :won}}) do
+    IO.puts("Congratulations. You won! The word was #{tally.letters |> Enum.join()}")
   end
 
   def interact({_game, tally = %{game_state: :lost}}) do
@@ -23,14 +23,20 @@ defmodule TextClient.Impl.Player do
   def interact({ game, tally }) do
     IO.puts feedback_for(tally)
     IO.puts(current_word(tally))
-    Hangman.make_move(game, get_guess())
-    |> interact()
+
+    case get_guess() do
+      :quit ->
+        IO.puts("\nGoodbye!")
+
+      {:ok, guess} ->
+        interact({ game, Hangman.make_move(game, guess) })
+    end
   end
 
   ################################################## 
   
   def feedback_for(tally = %{game_state: :initializing}) do
-    "Welcome! I'm thinking of a #{tally.letters |> length} letter word"
+    "Welcome! I'm thinking of a word with #{tally.letters |> length} letters"
   end
 
   def feedback_for(%{game_state: :good_guess}), do: "Good guess!"
@@ -48,9 +54,23 @@ defmodule TextClient.Impl.Player do
     ]
   end
 
+  @spec get_guess :: {:ok, String.t()} | :quit
   def get_guess() do
     IO.gets("Next letter: ")
-    |> String.trim()
-    |> String.downcase()
+    |> parse_input()
   end
+
+  # IO.gets returns :eof on Ctrl-D and {:error, reason} if input can't be read
+  defp parse_input(input) when is_binary(input) do
+    guess = input |> String.trim() |> String.downcase()
+
+    if guess =~ ~r/\A[a-z]\z/ do
+      {:ok, guess}
+    else
+      IO.puts("Please type a single letter from a to z")
+      get_guess()
+    end
+  end
+
+  defp parse_input(_eof_or_error), do: :quit
 end
